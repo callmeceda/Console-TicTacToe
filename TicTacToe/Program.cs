@@ -8,21 +8,14 @@ namespace TicTacToe
 {
     class Program
     {
-        static char[,] boardGame;
-        static string playerName;
-        static int player1Points = 0;
-        static int player2Points = 0;
-        static char c;
-        static char playerSign;
-        static bool gameEnd = false;
-
-        static void testTada()
-        {
-            boardGame = new char[3, 3]
-            {{' ',' ',' '},
-            {'O','O',' '},
-            {'X','X','X'}};
-        }
+        static char[,] boardGame; //board of a game
+        static int player1Points = 0; //number of points that player 1 has collected
+        static int player2Points = 0; //number of points that player 2 has collected
+        static int moves = 0; //Number of moves made in a game
+        static char c; //charachter that holds first selected sign for player 1
+        static char playerSign; //first selected sign just uppercased
+        static bool haveAdigWinner = false; //if there is a winner by diagonal
+        static bool gameEnd = false; //if game has ended
 
         static string OtherPlayerSign(char sign)
         {
@@ -48,21 +41,16 @@ namespace TicTacToe
             while (!gameEnd)
             {
                 DisplayBoard();
-
-                /*if (gameEnd == true)
-                {
-                    break;
-                }*/
                 InsertSing();
                 //testTada();
                 ChangeTurn();
-                CheckWinner();
+                CheckOutcome();
                 //Console.ReadKey();
             }
 
         }
 
-        static void CheckWinner()
+        static void CheckOutcome()
         {
             //Checks rows
             for (int row = 0; row < 3; row++)
@@ -109,22 +97,66 @@ namespace TicTacToe
                 }
             }
 
+            //checks diag lef-right
             for (int row = 0; row < 3; row++)
             {
-                for (int col = 0; col < 3; col++)
+                for (int col = row; col < 3; col++)
                 {
-                    if (boardGame[row,col] != ' ')
+                    if (boardGame[row, col] == 'X' || boardGame[row, col] == 'O')
                     {
+                        if (row == 2 && col == 2)
+                        {
+                            if (playerSign != 'X')
+                            {
+                                DisplayBoard();
+                                gameEnd = true;
+                                player1Points++;
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.Write("Player 1 wins! Player 1 has: {0}\r\n", player1Points);
+                                Console.ReadKey();
+                                haveAdigWinner = true;
+                            }
+                            else if (playerSign != 'O')
+                            {
+                                DisplayBoard();
+                                gameEnd = true;
+                                player2Points++;
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.Write("Player 2 wins! Player 2 has: {0}\r\n", player2Points);
+                                Console.ReadKey();
+                                haveAdigWinner = true;
+                            }
+                        }
                         continue;
                     }
                 }
+            }
+
+            //check dig right-left
+            /*for (int col = 2; c >= 0; col--)
+            {
+                for (int row = 0; row < 3; row++)
+                {
+                    if (boardGame[row,col] == 'X' || boardGame[row,col] == 'O')
+                    {
+                        if (row == 2 && col == 0)
+                        {
+
+                        }
+                    }
+                }
+            }*/
+
+            //check draw
+            if (moves == 9 && !haveAdigWinner)
+            {
                 DisplayBoard();
-                Console.Write("Game is draw");
+                Console.Write("Game is draw!");
                 gameEnd = true;
                 Console.ReadKey();
             }
 
-            //checks diag
+
         }
 
         static void DisplayTitle()
@@ -162,6 +194,7 @@ namespace TicTacToe
                 colVal -= 1;
 
             } while (!SpotFree(rowVal, colVal));
+            moves++;
             boardGame[rowVal, colVal] = char.ToUpper(playerSign);
         }
         
