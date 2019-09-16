@@ -98,7 +98,7 @@ namespace TicTacToe
             }
 
             //checks diag lef-right
-            for (int row = 0; row < 3; row++)
+            /*for (int row = 0; row < 3; row++)
             {
                 for (int col = row; col < 3; col++)
                 {
@@ -130,7 +130,7 @@ namespace TicTacToe
                         continue;
                     }
                 }
-            }
+            }*/
 
             //check dig right-left
             /*for (int col = 2; c >= 0; col--)
