@@ -1,3 +1,2 @@
-#TicTacToe-ConsoleGame
-
-still in process of development
+# TicTacToe-ConsoleGame
+Simple traditional Tic-Tac-Toe game.
